@@ -12,6 +12,7 @@ import { useBehavior } from 'molstar/lib/mol-plugin-ui/hooks/use-behavior';
 import { ParameterControls } from 'molstar/lib/mol-plugin-ui/controls/parameters';
 import { PluginCommands } from 'molstar/lib/mol-plugin/commands';
 import { Color } from 'molstar/lib/mol-util/color';
+import { Asset } from 'molstar/lib/mol-util/assets';
 
 const Molstar = props => {
 
@@ -107,6 +108,15 @@ const Molstar = props => {
       }
     }
   }
+
+  async function getDownloadParams(src, url, label, isBinary) {
+    const ids = src.split(/[,\s]/).map(id => id.trim()).filter(id => !!id && (id.length >= 4 || /^[1-9][0-9]*$/.test(id)));
+    const ret = [];
+    for (const id of ids) {
+        ret.push({ url: Asset.Url(await url(id)), isBinary, label: label(id) });
+    }
+    return ret;
+}
 
   const width = dimensions ? dimensions[0] : "100%";
   const height = dimensions ? dimensions[1] : "100%";
