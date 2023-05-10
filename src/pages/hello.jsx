@@ -9,8 +9,9 @@ export default function Hello() {
   const pdbIdList = ['6vvw', '8j0y', '8dmn', '7VPX', '8b05']
   const [index, setIndex] = useState(0)
   const idRef = useRef(null)
-  const [url, setUrl] = useState(`https://files.rcsb.org/view/6vvw.cif`)
+  const [url, setUrl] = useState(`https://files.rcsb.org/view/1tqn.cif`)
   const [ready, setReady] = useState(false)
+  const [type, setType] = useState('pdb')
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     setIndex((index + 1) % pdbIdList.length)
@@ -20,10 +21,17 @@ export default function Hello() {
   // }, [index])
 
   const changeType = (type) => {
-    if (ready) setReady(false)
-    const id = idRef.current.value
-    console.log(type)
+    if (ready) setReady(false);
+    setType(type);
+    
+  }
 
+  const remove = () => {
+    setReady(false);
+  }
+
+  const submit = () => {
+    const id = idRef.current.value;
     if (type === 'pdb') {
       console.log(1)  
       setUrl(`https://files.rcsb.org/view/${id}.cif`);
@@ -47,6 +55,7 @@ export default function Hello() {
     } else if (type === 'pubchem') {
       setUrl(`https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/CID/${id.trim()}/record/SDF/?record_type=3d`)
     }
+    setReady(true);
   }
 
   useEffect(() => {
@@ -59,7 +68,7 @@ export default function Hello() {
             Hello, world!
         </p>
         <div style={{ width: '600px',  height: '600px' }}>
-          <select defaultValue="pdb-dev" name="protein type" id="" onChange={e => changeType(e.target.value)}>
+          <select defaultValue="pdb" name="protein type" id="" onChange={e => changeType(e.target.value)}>
             <option value="pdb-dev">pdb-dev</option>
             <option value="pdb">pdb</option>
             
@@ -69,9 +78,10 @@ export default function Hello() {
             <option value="pubchem">pubchem</option>
 
           </select>
-          <input type="text" ref={idRef}/>
-          <button onClick={() => setReady(true)}>ready</button>
-          {ready ? <Molstar pdbId={pdbIdList[index]} useInterface={false} url={url}  /> : null}
+          <input type="text" ref={idRef} defaultValue={'6vvw'}/>
+          <button onClick={submit}>ready</button>
+          <button onClick={remove}>remove</button>
+          {ready ? <Molstar pdbId={pdbIdList[index]} useInterface={false} url={url} showAxes={true} /> : null}
         </div>
     </div>
   )
