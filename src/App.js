@@ -7,7 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Hello />} />
+      <Route path="/protein-demo" element={<Hello />} />
       
     </Routes>
   );
