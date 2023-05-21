@@ -171,7 +171,7 @@ const Molstar = props => {
                 "fov": 45,
                 // "manualReset": false
             },
-            cameraClipping: { far: true, radius: 1.1, minNear: 5 },
+            cameraClipping: { far: false, radius: 0.01, minNear: 5 },
             cameraFog: { name: 'off', params: {} },
             postprocessing: {
                 outline: {
